@@ -860,6 +860,9 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
                 if(!mDevices.containsKey(gatt.getDevice().getAddress())) {
                     gatt.close();
                 }
+            } else if(newState == BluetoothProfile.STATE_CONNECTED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                log(LogLevel.DEBUG, "[requestConnectionPriority]: " + gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH));
+                // log(LogLevel.DEBUG, "[requestLeConnectionUpdate]: " + gatt.requestLeConnectionUpdate(0x06, 0x20, 0x00, 0xA0, 0x00, 0x03));
             }
             invokeMethodUIThread("DeviceState", ProtoMaker.from(gatt.getDevice(), newState).toByteArray());
         }
