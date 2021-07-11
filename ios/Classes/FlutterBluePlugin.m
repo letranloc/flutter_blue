@@ -41,6 +41,14 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
 @end
 
 @implementation FlutterBluePlugin
+
+-(CBCentralManager *)centralManager {
+    if (!_centralManager) {
+        _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    }
+    return  _centralManager;
+}
+
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
                                    methodChannelWithName:NAMESPACE @"/methods"
@@ -63,9 +71,9 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if (self.centralManager == nil) {
-    self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
-  }
+  // if (self.centralManager == nil) {
+  //   self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+  // }
   if ([@"setLogLevel" isEqualToString:call.method]) {
     NSNumber *logLevelIndex = [call arguments];
     _logLevel = (LogLevel)[logLevelIndex integerValue];
